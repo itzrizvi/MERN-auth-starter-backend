@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
-const port: number = 5000;
+import dotenv from "dotenv";
+dotenv.config();
+const port: number | string = process.env.port || 5000;
 // Create App
 const app = express();
 // Root Route
