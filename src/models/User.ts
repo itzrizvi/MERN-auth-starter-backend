@@ -1,6 +1,8 @@
+import { NextFunction } from "express";
 import mongoose, { Document, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
 
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
   name: string;
   email: string;
   password: string;
@@ -26,6 +28,15 @@ const userSchema: Schema<UserDocument> = new Schema(
     timestamps: true,
   },
 );
+
+// Encrypt Password
+userSchema.pre("save", async function (this: UserDocument, next: NextFunction) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 const User = mongoose.model<UserDocument>("User", userSchema);
 export default User;
