@@ -6,6 +6,7 @@ export interface UserDocument extends Document {
   name: string;
   email: string;
   password: string;
+  matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 
 const userSchema: Schema<UserDocument> = new Schema(
@@ -37,6 +38,13 @@ userSchema.pre("save", async function (this: UserDocument, next: NextFunction) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+// Password Check
+userSchema.methods.matchPassword = async function (
+  enteredPassword: string,
+): Promise<boolean> {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 const User = mongoose.model<UserDocument>("User", userSchema);
 export default User;
