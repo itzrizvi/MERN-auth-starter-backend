@@ -1,3 +1,6 @@
+import { Request } from "express";
+import { UserDocument } from "../models/User";
+
 // Register User Types
 export interface RegisterRequestBody {
   name: string;
@@ -24,3 +27,8 @@ export type AuthUserResponse = {
   name: string;
   email: string;
 };
+
+// GET Profile Types
+export interface ProtectedRouteRequest extends Request {
+  user?: UserDocument;
+}
