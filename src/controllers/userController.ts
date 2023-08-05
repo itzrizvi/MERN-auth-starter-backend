@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import User, { UserDocument } from "../models/User";
 import { RegisterRequestBody, RegisterUserResponse } from "../utils/types";
+import generateToken from "../utils/generateToken";
 
 // @desc    Auth user/set Token
 // route    POST /api/users/auth
@@ -33,6 +34,7 @@ const registerUser = asyncHandler(
     });
 
     if (user) {
+      generateToken(res, user._id);
       res.status(201).json({
         _id: user._id,
         name: user.name,
