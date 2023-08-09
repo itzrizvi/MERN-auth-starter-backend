@@ -1,3 +1,2 @@
 ﻿# MERN-auth-starter-backend
-## Typescript
-## MongoDB
+## Typescript, MongoDB, Express
